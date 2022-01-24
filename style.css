@@ -14,8 +14,19 @@
     border: 1px solid black;
 }
 
+.line {
+    display: flex;
+}
+
 .card {
     margin: 5px;
     width: 128px;
     height: 128px;
+}
+
+/* to keep the pixel art look */
+img {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
 }

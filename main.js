@@ -28,8 +28,8 @@
 const boardDisplayed = document.getElementById("board");
 
 const board = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
+    [1, 2, 3, 4],
+    [8, 7, 6, 5],
     [0, 0, 0, 0],
     [0, 0, 0, 0]
 ];
@@ -38,14 +38,53 @@ function displayBoard() {
     let result = "";
 
     for (let i=0; i<board.length; i++) {
-        result += '<div class="line">'
+        result += '<div class="line">';
         for (let j=0; j<board[i].length; j++) {
-            result += '<button class="card">Afficher</button>'
+            let card = board[i][j];
+            if (card === 0) {
+                result += '<button class="card">Afficher</button>';
+            } else {
+                result += `<img class="card" src="${getImage(card)}" alt=""></img>`;
+            }
         }
-        result += "</div>"
+        result += "</div>";
     }
 
     boardDisplayed.innerHTML = result;
+}
+
+function getImage(value) {
+    imgRoot = "./assets/";
+    switch(value) {
+        case 1:
+            imgRoot += "book_purple.png";
+            break;
+        case 2:
+            imgRoot += "heart.png";
+            break;
+        case 3:
+            imgRoot += "human.png";
+            break;
+        case 4:
+            imgRoot += "key.png";
+            break;
+        case 5:
+            imgRoot += "potion_green.png";
+            break;
+        case 6:
+            imgRoot += "shield_silver.png";
+            break;
+        case 7:
+            imgRoot += "skull.png";
+            break;
+        case 8:
+            imgRoot += "sword_silver.png";
+            break;
+        default:
+            console.log("unexpected value")    
+    }
+
+    return imgRoot;
 }
 
 displayBoard();
