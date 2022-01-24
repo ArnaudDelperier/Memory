@@ -9,12 +9,33 @@ const board = [
 ];
 
 // table containing face up cards
-const resultBoard = [
-    [1, 2, 6, 5],
-    [8, 3, 7, 6],
-    [1, 4, 5, 2],
-    [8, 7, 3, 4]
-];
+const resultBoard = generateRandomBoard();
+
+function generateRandomBoard() {
+    const randomBoard = [];
+
+    // contains as many indexes as different cards
+    const cardsValue = [0, 0, 0, 0, 0 ,0 ,0 ,0];
+
+    for (let i=0; i<4; i++) {
+        const row = [];
+        for (let j=0; j<4; j++) {
+            let end = false;
+            while(!end) {
+                const random = Math.floor(Math.random() * 8)
+                // if there are less than 2 cards of this type in the board it is added otherwise we redraw a card randomly
+                if (cardsValue[random] < 2) {
+                    row.push(random + 1);
+                    cardsValue[random]++;
+                    end = true;
+                }
+            }
+        }
+        randomBoard.push(row);
+    }
+
+    return randomBoard;
+}
 
 // variable to manage the state of the game. 
 // Coordinates of the last card clicked
@@ -33,9 +54,9 @@ function displayBoard() {
         for (let j=0; j<board[i].length; j++) {
             let card = board[i][j];
             if (card === 0) {
-                result += `<button class="card" onClick="verifyCoordinates('${i.toString()}${j.toString()}')">Afficher</button>`;
+                result += `<button class="card" id="${i}${j}" onClick="verifyCoordinates(event, '${i.toString()}${j.toString()}')">Afficher</button>`;
             } else {
-                result += `<img class="card" src="${getImage(card)}" alt=""></img>`;
+                result += `<img class="card" id="${i}${j}" src="${getImage(card)}" alt=""></img>`;
             }
         }
         result += "</div>";
@@ -44,6 +65,7 @@ function displayBoard() {
     boardDisplayed.innerHTML = result;
 }
 
+// board start display
 displayBoard();
 
 // return the path of the image we can display
@@ -81,7 +103,7 @@ function getImage(value) {
     return imgPath;
 }
 
-function verifyCoordinates(buttonCoordinates) {
+function verifyCoordinates(event, buttonCoordinates) {
     if (clickReady) {
         // we increment the number of actions
         actionCounter++;
@@ -126,7 +148,11 @@ function verifyCoordinates(buttonCoordinates) {
             // we save the last card clicked
             cardSelected = [row, column];
         }
-       
+
+        // play flip animation when clicking
+        const cardId = `${row.toString()}${column.toString()}`;
+        const card = document.getElementById(cardId);
+        card.classList.add("flip")      
     }
 }
 
@@ -135,5 +161,4 @@ function updateGameState() {
     actionCounter = 0;
     displayBoard();
 }
-
 
