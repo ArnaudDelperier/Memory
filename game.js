@@ -80,7 +80,7 @@ function game() {
     // board start display
     displayBoard();
     
-    // return the path of the image we can display
+    // return the path of the image we want display
     function getImage(value) {
         imgPath = "./assets/";
         switch(value) {
@@ -149,7 +149,7 @@ function game() {
                         updateGameState()
                     }, 1000)
                 }
-                // Sinon on peut recliquer directement sans délais
+                // Otherwise you can click directly without delay
                 else {
                     // we save the last card clicked
                     cardSelected = [row, column];
