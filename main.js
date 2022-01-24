@@ -1,48 +1,39 @@
-// Créer une grille pour afficher les cartes face cachés
-//    [
-//     [0, 0, 0, 0],
-//     [0, 0, 0, 0],
-//     [0, 0, 0, 0],
-//     [0, 0, 0, 0]
-//    ]
-
-// Meme chose pour la grille generé avec des pairs
-//    [
-//     [1, 3, 3, 5],
-//     [7, 1, 2, 4],
-//     [8, 4, 6, 8],
-//     [6, 2, 5, 7]
-//    ] 
-
-// fonction pour afficher tabmeau qui va génerer le html
-// on parcours le tableau avec double boucle pour concatener le html a rendre
-// monHtml = "<div class=container> ** une autre div pour chaque case **</div>"
-
-// chaque chiffre affiche une image differente (0 = la carte face caché)
-
-// Quand on clique sur une case on va afficher à la place la case du tableau de résultat
-// On sauvegarde les coordonées du premier clique et combien d'image retourné (si premier clique ou 2eme)
-// si on en ets au 2eme clique alors on vérifie
-
-
 const boardDisplayed = document.getElementById("board");
 
+// table containing face down cards
 const board = [
-    [1, 2, 3, 4],
-    [8, 7, 6, 5],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0]
 ];
 
+// table containing face up cards
+const resultBoard = [
+    [1, 2, 6, 5],
+    [8, 3, 7, 6],
+    [1, 4, 5, 2],
+    [8, 7, 3, 4]
+];
+
+// variable to manage the state of the game. 
+// Coordinates of the last card clicked
+// A counter to check if it is the first card returned or the second
+// A boolean to check if an action is in progress or if the click is available
+let cardSelected = [0, 0];
+let actionCounter = 0;
+let clickReady = true;
+
+// Function to create the html needed to display the board in game
 function displayBoard() {
     let result = "";
 
     for (let i=0; i<board.length; i++) {
-        result += '<div class="line">';
+        result += '<div class="row">';
         for (let j=0; j<board[i].length; j++) {
             let card = board[i][j];
             if (card === 0) {
-                result += '<button class="card">Afficher</button>';
+                result += `<button class="card" onClick="verifyCoordinates('${i.toString()}${j.toString()}')">Afficher</button>`;
             } else {
                 result += `<img class="card" src="${getImage(card)}" alt=""></img>`;
             }
@@ -53,39 +44,96 @@ function displayBoard() {
     boardDisplayed.innerHTML = result;
 }
 
+displayBoard();
+
+// return the path of the image we can display
 function getImage(value) {
-    imgRoot = "./assets/";
+    imgPath = "./assets/";
     switch(value) {
         case 1:
-            imgRoot += "book_purple.png";
+            imgPath += "book_purple.png";
             break;
         case 2:
-            imgRoot += "heart.png";
+            imgPath += "heart.png";
             break;
         case 3:
-            imgRoot += "human.png";
+            imgPath += "human.png";
             break;
         case 4:
-            imgRoot += "key.png";
+            imgPath += "key.png";
             break;
         case 5:
-            imgRoot += "potion_green.png";
+            imgPath += "potion_green.png";
             break;
         case 6:
-            imgRoot += "shield_silver.png";
+            imgPath += "shield_silver.png";
             break;
         case 7:
-            imgRoot += "skull.png";
+            imgPath += "skull.png";
             break;
         case 8:
-            imgRoot += "sword_silver.png";
+            imgPath += "sword_silver.png";
             break;
         default:
             console.log("unexpected value")    
     }
 
-    return imgRoot;
+    return imgPath;
 }
 
-displayBoard();
+function verifyCoordinates(buttonCoordinates) {
+    if (clickReady) {
+        // we increment the number of actions
+        actionCounter++;
+    
+        // we retrieve the coordinates of the card clicked
+        const row = buttonCoordinates.substr(0,1);
+        const column = buttonCoordinates.substr(1,1);
+
+        // flip the card clicked to display the image
+        board[row][column] = resultBoard[row][column];
+
+        // update the display
+        displayBoard();
+    
+        // When we click on a second card we compare them
+        if (actionCounter > 1) {
+            // you can no longer click during the process
+            clickReady = false
+            // if the value of the card clicked does not correspond to the value of the card at the coordinates of the last card clicked
+            if (board[row][column] !== resultBoard[cardSelected[0]][cardSelected[1]]) {
+                // we start a delay before flipping the cards face down and being able to click again
+                setTimeout(() => {
+                    // we flip both cards face down
+                    board[row][column] = 0;
+                    board[cardSelected[0]][cardSelected[1]] = 0;
+                    
+                    // we save the last card clicked
+                    cardSelected = [row, column];
+
+                    updateGameState()
+                }, 1000)
+            }
+            // Sinon on peut recliquer directement sans délais
+            else {
+                // we save the last card clicked
+                cardSelected = [row, column];
+
+                updateGameState()
+            }
+
+        } else {
+            // we save the last card clicked
+            cardSelected = [row, column];
+        }
+       
+    }
+}
+
+function updateGameState() {
+    clickReady = true;
+    actionCounter = 0;
+    displayBoard();
+}
+
 
