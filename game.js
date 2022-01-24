@@ -63,14 +63,12 @@ function game() {
                     elem.textContent = "Afficher"
                     elem.onclick = () => {verifyCoordinates(`${i.toString()}${j.toString()}`)}
                     row.appendChild(elem)
-                    // result += `<button class="card" id="${i}${j}" onClick="verifyCoordinates('${i.toString()}${j.toString()}')">Afficher</button>`;
                 } else {
                     const elem = document.createElement("img")
                     elem.id = `${i}${j}`
                     elem.classList.add("card")
                     elem.src = `${getImage(card)}`
                     row.appendChild(elem)
-                    // result += `<img class="card" id="${i}${j}" src="${getImage(card)}" alt=""></img>`;
                 }
             }
             boardDisplayed.appendChild(row)
