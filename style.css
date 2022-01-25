@@ -8,6 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 #board {
@@ -51,6 +52,24 @@
     to {
         transform: scaleX(0);
     }
+}
+
+button {
+    margin: 10px;
+    height: 50px;
+    width: 100px;
+}
+
+.modal {
+    width: 200px;
+    height: 200px;
+    background-color: gray;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
 /* to keep the pixel art look */

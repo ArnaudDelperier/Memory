@@ -1,7 +1,23 @@
 function game() {
+
+    // Timer 
+    let time = 0
+
+    const timer = document.createElement("div");
+    timer.classList.add("timer");
+    timer.innerHTML = `<p>Temps : ${time}</p>`;
+    container.appendChild(timer);
+
+    let setTimer = setInterval(() => {
+        console.log("time " + time)
+        time++
+        timer.innerHTML = `<p>Temps : ${time}</p>`;
+    }, 1000)
+
+    // Board
     const boardDisplayed = document.createElement("div");
-    boardDisplayed.id = "board"
-    container.appendChild(boardDisplayed)
+    boardDisplayed.id = "board";
+    container.appendChild(boardDisplayed);
 
     // table containing face down cards
     const board = [
@@ -43,9 +59,11 @@ function game() {
     // variable to manage the state of the game. 
     // Coordinates of the last card clicked
     // A counter to check if it is the first card returned or the second
+    // A counter to check if we find all pairs
     // A boolean to check if an action is in progress or if the click is available
     let cardSelected = [0, 0];
     let actionCounter = 0;
+    let winCounter = 0;
     let clickReady = true;
     
     // Function to create the html needed to display the board in game
@@ -153,13 +171,21 @@ function game() {
                 else {
                     // we save the last card clicked
                     cardSelected = [row, column];
-    
+
+                    // player find a pair
+                    winCounter++
+
+                    if (winCounter > 7) {
+                        winGame()
+                    }
+
                     updateGameState()
                 }
     
             } else {
                 // we save the last card clicked
                 cardSelected = [row, column];
+
             }
     
             // play flip animation when clicking
@@ -176,14 +202,27 @@ function game() {
         displayBoard();
     }
 
+    function winGame() {
+        console.log("gagné")
+        const modal = document.createElement("div");
+        modal.classList.add("modal")
+        container.appendChild(modal)
+
+        // clean timer
+        clearInterval(setTimer)
+    }
+
     // button to return to the menu
     const menuButton = document.createElement("button");
-    menuButton.textContent = "Menu"
-    menuButton.onclick = returnToMenu
-    container.appendChild(menuButton)
+    menuButton.textContent = "Menu";
+    menuButton.onclick = returnToMenu;
+    container.appendChild(menuButton);
 
     function returnToMenu() {
-        gameState = "menu"
-        checkGameState()
+        // clean timer
+        clearInterval(setTimer)
+        gameState = "menu";
+        console.log("test" + setTimer)
+        checkGameState();
     }
 }
