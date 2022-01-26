@@ -1,0 +1,26 @@
+{
+  "name": "memory",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000M\u0000e\u0000m\u0000o\u0000r\u0000y\u0000\r\u0000 \u0000",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node back/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArnaudDelperier/Memory.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArnaudDelperier/Memory/issues"
+  },
+  "homepage": "https://github.com/ArnaudDelperier/Memory#readme",
+  "dependencies": {
+    "dotenv": "^14.3.2",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.8",
+    "multer": "^1.4.4"
+  }
+}
