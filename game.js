@@ -175,7 +175,7 @@ function game() {
                     // player find a pair
                     winCounter++
 
-                    if (winCounter > 7) {
+                    if (winCounter > 0) {
                         winGame()
                     }
 
@@ -203,14 +203,39 @@ function game() {
     }
 
     function winGame() {
-        console.log("gagné")
-        const modal = document.createElement("div");
-        modal.classList.add("modal")
-        container.appendChild(modal)
+
+        displayModal()
 
         // clean timer
         clearInterval(setTimer)
     }
+
+    function displayModal() {
+        // we opacify the background and make it non-clickable
+        const modalBackground = document.createElement("div");
+        modalBackground.classList.add("modal-background");
+        container.appendChild(modalBackground);
+
+        // we create a modal to save your score and return to the menu
+        const modal = document.createElement("div");
+        modal.classList.add("modal");
+        container.appendChild(modal);
+
+        modal.innerHTML =  `<p class="modal-text">Victoire !</p>
+                            <p class="modal-text">Vous avez gagné en ${time} secondes</p>
+                            <form action="" method="get">
+
+                                <label for="pseudo">Entrez votre pseudo : </label>
+                                <input type="text" name="pseudo" id="pseudo" required>
+
+
+                                <input type="submit" value="Enregistrer">
+
+                            </form>
+                            <button id="modal-btn">Menu</button>`;
+        document.getElementById("modal-btn").onclick = returnToMenu;
+    }
+
 
     // button to return to the menu
     const menuButton = document.createElement("button");
@@ -222,7 +247,6 @@ function game() {
         // clean timer
         clearInterval(setTimer)
         gameState = "menu";
-        console.log("test" + setTimer)
         checkGameState();
     }
 }
