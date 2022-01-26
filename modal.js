@@ -22,26 +22,27 @@ function modal(time, returnToMenu) {
                         </form>
                         <button id="modal-btn">Menu</button>`;
     document.getElementById("modal-btn").onclick = returnToMenu;
+
+    // Method to submit score in database
     document.getElementById("score-form").addEventListener('submit', async function(e) {
         e.preventDefault()
 
+        // We create a new FormData with information of the score-form
         const data = new FormData(e.target);
+        // We add score (time to complete memory) in the request
+        data.append("time", time)
 
         try {
-            // asynchrone donc on await
-            const result = await fetch(`${utils.url_back}/add-score`, {
+            const result = await fetch(`http://localhost:3000/add-score`, {
               method: 'POST',
               body: data,
             });
     
-            // grâce au try catch, s'il n'y a pas d'erreur pendant l'await on redirige vers https://memory-back.herokuapp.com/Memory-Front/
-            // ça aura pour effet de rafraîchir la page, et de voir le nouveau score entré à l'arrivé sur le site
-            window.location = '/Memory-Front/';
+            // Redirect to Menu
+            window.location = '/';
     
-            // s'il y'a une erreur pendant le fetch on l'affiche dans la console
           } catch (error) {
             console.log(error);
           }
     })
-
 }

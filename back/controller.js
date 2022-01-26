@@ -1,9 +1,10 @@
-// import du modèle score
+// import mongoose schema
 const Score = require('./models');
 
 const controller = {
 
     addNewScore: async (req, res) => {
+        // we deconstruct the data of the body
         let { pseudo, time } = req.body;
     
         let score = new Score({
@@ -11,6 +12,7 @@ const controller = {
           time,
         });
 
+        // send score to database
         try {
           score = await score.save();
           res.status(200).json({ save: 'ok' });
