@@ -175,7 +175,7 @@ function game() {
                     // player find a pair
                     winCounter++
 
-                    if (winCounter > 0) {
+                    if (winCounter > 7) {
                         winGame()
                     }
 
